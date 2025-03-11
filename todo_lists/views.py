@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.utils import timezone
 from .models import Project, Task
 
 # Create your views here.
@@ -101,19 +102,88 @@ def task_detail(request, pk):
 
 def task_create(request):
     """View to create a new task."""
-    # Placeholder - will implement form handling
-    return render(request, 'todo_lists/task_form.html')
+    if request.method == 'POST':
+        # Process the form data
+        title = request.POST.get('title')
+        description = request.POST.get('description', '')
+        project_id = request.POST.get('project', '')
+        due_date_str = request.POST.get('due_date', '')
+        is_completed = request.POST.get('is_completed', False) == 'on'
+        
+        if title:
+            # Create a new task
+            task = Task(
+                title=title,
+                description=description,
+                is_completed=is_completed
+            )
+            
+            # Set project if selected
+            if project_id:
+                task.project = get_object_or_404(Project, pk=project_id)
+                
+            # Set due date if provided
+            if due_date_str:
+                task.due_date = due_date_str
+                
+            task.save()
+            return redirect('todo_lists:task_detail', pk=task.id)
+    
+    # Get all projects for the form's project selection dropdown
+    projects = Project.objects.all()
+    
+    # Display the empty form
+    return render(request, 'todo_lists/task_form.html', {'projects': projects})
 
 def task_update(request, pk):
     """View to update an existing task."""
     task = get_object_or_404(Task, pk=pk)
-    # Placeholder - will implement form handling
-    return render(request, 'todo_lists/task_form.html', {'task': task})
+    
+    if request.method == 'POST':
+        # Process the form data
+        title = request.POST.get('title')
+        description = request.POST.get('description', '')
+        project_id = request.POST.get('project', '')
+        due_date_str = request.POST.get('due_date', '')
+        is_completed = request.POST.get('is_completed', False) == 'on'
+        
+        if title:
+            # Update the task
+            task.title = title
+            task.description = description
+            task.is_completed = is_completed
+            
+            # Set project if selected, otherwise set to None
+            if project_id:
+                task.project = get_object_or_404(Project, pk=project_id)
+            else:
+                task.project = None
+                
+            # Set due date if provided, otherwise set to None
+            if due_date_str:
+                task.due_date = due_date_str
+            else:
+                task.due_date = None
+                
+            task.save()
+            return redirect('todo_lists:task_detail', pk=task.id)
+    
+    # Get all projects for the form's project selection dropdown
+    projects = Project.objects.all()
+    
+    # Display the form with the current data
+    return render(request, 'todo_lists/task_form.html', {'task': task, 'projects': projects})
 
 def task_delete(request, pk):
     """View to delete a task."""
     task = get_object_or_404(Task, pk=pk)
-    # Placeholder - will implement deletion confirmation
+    
+    if request.method == 'POST':
+        # Delete the task
+        task.delete()
+        return redirect('todo_lists:task_list')
+    
+    # Display the confirmation page
     return render(request, 'todo_lists/task_confirm_delete.html', {'task': task})
 
 def task_toggle_completion(request, pk):

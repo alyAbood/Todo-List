@@ -1,0 +1,123 @@
+{% extends "todo_lists/base.html" %}
+
+{% block title %}{{ task.title }} - Task Manager{% endblock %}
+
+{% block nav_tasks_active %}active{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'todo_lists:index' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'todo_lists:task_list' %}">Tasks</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ task.title }}</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header {% if task.is_completed %}bg-success{% else %}bg-primary{% endif %} text-white d-flex justify-content-between align-items-center">
+                <h2 class="mb-0 {% if task.is_completed %}task-completed{% endif %}">{{ task.title }}</h2>
+                <div>
+                    <a href="{% url 'todo_lists:task_toggle_completion' task.id %}" class="btn btn-light btn-sm">
+                        <span class="material-icons">{% if task.is_completed %}close{% else %}check{% endif %}</span>
+                        {% if task.is_completed %}Mark Incomplete{% else %}Mark Complete{% endif %}
+                    </a>
+                    <a href="{% url 'todo_lists:task_update' task.id %}" class="btn btn-light btn-sm">
+                        <span class="material-icons">edit</span> Edit
+                    </a>
+                    <a href="{% url 'todo_lists:task_delete' task.id %}" class="btn btn-light btn-sm">
+                        <span class="material-icons">delete</span> Delete
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col">
+                        <h5>Description</h5>
+                        <p>{{ task.description|linebreaks|default:"No description provided" }}</p>
+                    </div>
+                </div>
+                
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="card bg-light">
+                            <div class="card-body text-center">
+                                <h6>Project</h6>
+                                {% if task.project %}
+                                    <p class="mb-0">
+                                        <a href="{% url 'todo_lists:project_detail' task.project.id %}">{{ task.project.title }}</a>
+                                    </p>
+                                {% else %}
+                                    <p class="mb-0 text-muted">No project assigned</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card bg-light">
+                            <div class="card-body text-center">
+                                <h6>Status</h6>
+                                <p class="mb-0">
+                                    {% if task.is_completed %}
+                                        <span class="badge bg-success">Completed</span>
+                                    {% else %}
+                                        <span class="badge bg-warning text-dark">Pending</span>
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card bg-light">
+                            <div class="card-body text-center">
+                                <h6>Due Date</h6>
+                                {% if task.due_date %}
+                                    <p class="mb-0">{{ task.due_date|date:"F d, Y" }}</p>
+                                {% else %}
+                                    <p class="mb-0 text-muted">No due date</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card bg-light">
+                            <div class="card-body text-center">
+                                <h6>Created On</h6>
+                                <p class="mb-0">{{ task.created_at|date:"F d, Y" }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card bg-light">
+                            <div class="card-body text-center">
+                                <h6>Last Updated</h6>
+                                <p class="mb-0">{{ task.updated_at|date:"F d, Y" }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="d-flex justify-content-between">
+                    <a href="{% url 'todo_lists:task_list' %}" class="btn btn-outline-secondary">
+                        <span class="material-icons">arrow_back</span> Back to Tasks
+                    </a>
+                    {% if task.project %}
+                        <a href="{% url 'todo_lists:project_detail' task.project.id %}" class="btn btn-outline-primary">
+                            <span class="material-icons">folder</span> View Project
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

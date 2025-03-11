@@ -1,0 +1,86 @@
+{% extends "todo_lists/base.html" %}
+
+{% block title %}{% if task %}Edit Task{% else %}New Task{% endif %} - Task Manager{% endblock %}
+
+{% block nav_tasks_active %}active{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'todo_lists:index' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'todo_lists:task_list' %}">Tasks</a></li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    {% if task %}Edit Task{% else %}New Task{% endif %}
+                </li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h2 class="mb-0">{% if task %}Edit Task{% else %}Create New Task{% endif %}</h2>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="id_title" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="id_title" name="title" 
+                               placeholder="Enter task title" required
+                               value="{% if task %}{{ task.title }}{% endif %}">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="id_description" class="form-label">Description</label>
+                        <textarea class="form-control" id="id_description" name="description" 
+                                  placeholder="Enter task description" rows="3">{% if task %}{{ task.description }}{% endif %}</textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="id_project" class="form-label">Project (optional)</label>
+                        <select class="form-select" id="id_project" name="project">
+                            <option value="">No project</option>
+                            {% for project in projects %}
+                                <option value="{{ project.id }}" 
+                                    {% if task.project.id == project.id %}selected{% endif %}
+                                    {% if not task and request.GET.project == project.id|stringformat:"i" %}selected{% endif %}>
+                                    {{ project.title }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="id_due_date" class="form-label">Due Date (optional)</label>
+                        <input type="datetime-local" class="form-control" id="id_due_date" name="due_date"
+                               value="{% if task.due_date %}{{ task.due_date|date:'Y-m-d' }}T{{ task.due_date|time:'H:i' }}{% endif %}">
+                    </div>
+                    
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="id_is_completed" name="is_completed"
+                               {% if task.is_completed %}checked{% endif %}>
+                        <label class="form-check-label" for="id_is_completed">Mark as completed</label>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <a href="{% if task %}{% url 'todo_lists:task_detail' task.id %}{% else %}{% url 'todo_lists:task_list' %}{% endif %}" 
+                           class="btn btn-outline-secondary">
+                            <span class="material-icons">arrow_back</span> Cancel
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <span class="material-icons">save</span> 
+                            {% if task %}Update Task{% else %}Create Task{% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

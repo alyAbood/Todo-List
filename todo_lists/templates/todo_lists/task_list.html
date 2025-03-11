@@ -1,0 +1,219 @@
+{% extends "todo_lists/base.html" %}
+
+{% block title %}Task Manager - Tasks{% endblock %}
+
+{% block nav_tasks_active %}active{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h2 class="mb-0">All Tasks</h2>
+                <a href="{% url 'todo_lists:task_create' %}" class="btn btn-primary">
+                    <span class="material-icons">add</span> New Task
+                </a>
+            </div>
+            <div class="card-body">
+                {% if tasks %}
+                    <ul class="nav nav-tabs mb-4" id="taskTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="pending-tab" data-bs-toggle="tab" data-bs-target="#pending" type="button" role="tab" aria-controls="pending" aria-selected="true">
+                                Pending
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="completed-tab" data-bs-toggle="tab" data-bs-target="#completed" type="button" role="tab" aria-controls="completed" aria-selected="false">
+                                Completed
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab" aria-controls="all" aria-selected="false">
+                                All
+                            </button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="taskTabsContent">
+                        <!-- Pending Tasks Tab -->
+                        <div class="tab-pane fade show active" id="pending" role="tabpanel" aria-labelledby="pending-tab">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Title</th>
+                                            <th>Project</th>
+                                            <th>Due Date</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for task in tasks %}
+                                            {% if not task.is_completed %}
+                                                <tr>
+                                                    <td>
+                                                        <a href="{% url 'todo_lists:task_detail' task.id %}">{{ task.title }}</a>
+                                                    </td>
+                                                    <td>
+                                                        {% if task.project %}
+                                                            <a href="{% url 'todo_lists:project_detail' task.project.id %}">{{ task.project.title }}</a>
+                                                        {% else %}
+                                                            <span class="text-muted">No project</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if task.due_date %}
+                                                            {{ task.due_date|date:"M d, Y" }}
+                                                        {% else %}
+                                                            <span class="text-muted">No due date</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        <div class="btn-group" role="group">
+                                                            <a href="{% url 'todo_lists:task_toggle_completion' task.id %}" class="btn btn-sm btn-outline-success">
+                                                                <span class="material-icons">check</span>
+                                                            </a>
+                                                            <a href="{% url 'todo_lists:task_update' task.id %}" class="btn btn-sm btn-outline-secondary">
+                                                                <span class="material-icons">edit</span>
+                                                            </a>
+                                                            <a href="{% url 'todo_lists:task_delete' task.id %}" class="btn btn-sm btn-outline-danger">
+                                                                <span class="material-icons">delete</span>
+                                                            </a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <!-- Completed Tasks Tab -->
+                        <div class="tab-pane fade" id="completed" role="tabpanel" aria-labelledby="completed-tab">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Title</th>
+                                            <th>Project</th>
+                                            <th>Due Date</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for task in tasks %}
+                                            {% if task.is_completed %}
+                                                <tr class="table-success">
+                                                    <td>
+                                                        <a href="{% url 'todo_lists:task_detail' task.id %}" class="task-completed">{{ task.title }}</a>
+                                                    </td>
+                                                    <td>
+                                                        {% if task.project %}
+                                                            <a href="{% url 'todo_lists:project_detail' task.project.id %}">{{ task.project.title }}</a>
+                                                        {% else %}
+                                                            <span class="text-muted">No project</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if task.due_date %}
+                                                            {{ task.due_date|date:"M d, Y" }}
+                                                        {% else %}
+                                                            <span class="text-muted">No due date</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        <div class="btn-group" role="group">
+                                                            <a href="{% url 'todo_lists:task_toggle_completion' task.id %}" class="btn btn-sm btn-outline-secondary">
+                                                                <span class="material-icons">close</span>
+                                                            </a>
+                                                            <a href="{% url 'todo_lists:task_update' task.id %}" class="btn btn-sm btn-outline-secondary">
+                                                                <span class="material-icons">edit</span>
+                                                            </a>
+                                                            <a href="{% url 'todo_lists:task_delete' task.id %}" class="btn btn-sm btn-outline-danger">
+                                                                <span class="material-icons">delete</span>
+                                                            </a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <!-- All Tasks Tab -->
+                        <div class="tab-pane fade" id="all" role="tabpanel" aria-labelledby="all-tab">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Title</th>
+                                            <th>Project</th>
+                                            <th>Due Date</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for task in tasks %}
+                                            <tr class="{% if task.is_completed %}table-success{% endif %}">
+                                                <td>
+                                                    <a href="{% url 'todo_lists:task_detail' task.id %}" class="{% if task.is_completed %}task-completed{% endif %}">{{ task.title }}</a>
+                                                </td>
+                                                <td>
+                                                    {% if task.project %}
+                                                        <a href="{% url 'todo_lists:project_detail' task.project.id %}">{{ task.project.title }}</a>
+                                                    {% else %}
+                                                        <span class="text-muted">No project</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    {% if task.due_date %}
+                                                        {{ task.due_date|date:"M d, Y" }}
+                                                    {% else %}
+                                                        <span class="text-muted">No due date</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    {% if task.is_completed %}
+                                                        <span class="badge bg-success">Completed</span>
+                                                    {% else %}
+                                                        <span class="badge bg-warning text-dark">Pending</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    <div class="btn-group" role="group">
+                                                        <a href="{% url 'todo_lists:task_toggle_completion' task.id %}" class="btn btn-sm btn-outline-{% if task.is_completed %}secondary{% else %}success{% endif %}">
+                                                            <span class="material-icons">{% if task.is_completed %}close{% else %}check{% endif %}</span>
+                                                        </a>
+                                                        <a href="{% url 'todo_lists:task_update' task.id %}" class="btn btn-sm btn-outline-secondary">
+                                                            <span class="material-icons">edit</span>
+                                                        </a>
+                                                        <a href="{% url 'todo_lists:task_delete' task.id %}" class="btn btn-sm btn-outline-danger">
+                                                            <span class="material-icons">delete</span>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="text-center py-5">
+                        <div class="material-icons mb-3" style="font-size: 48px; color: #6c757d;">assignment</div>
+                        <h4>No Tasks Found</h4>
+                        <p class="text-muted">Create your first task to get started!</p>
+                        <a href="{% url 'todo_lists:task_create' %}" class="btn btn-primary">
+                            <span class="material-icons">add</span> Create Task
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
