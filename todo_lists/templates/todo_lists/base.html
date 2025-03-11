@@ -49,7 +49,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav me-auto">
                     <li class="nav-item">
                         <a class="nav-link {% block nav_home_active %}{% endblock %}" href="{% url 'todo_lists:index' %}">Home</a>
                     </li>
@@ -60,11 +60,53 @@
                         <a class="nav-link {% block nav_tasks_active %}{% endblock %}" href="{% url 'todo_lists:task_list' %}">Tasks</a>
                     </li>
                 </ul>
+                <ul class="navbar-nav ms-auto">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="material-icons">account_circle</span>
+                                <span>{{ user.username }}</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'accounts:logout' %}">
+                                        <span class="material-icons">logout</span>
+                                        <span>Logout</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link {% block nav_login_active %}{% endblock %}" href="{% url 'accounts:login' %}">
+                                <span class="material-icons">login</span>
+                                <span>Login</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% block nav_register_active %}{% endblock %}" href="{% url 'accounts:register' %}">
+                                <span class="material-icons">person_add</span>
+                                <span>Register</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
             </div>
         </div>
     </nav>
 
     <main class="container my-4">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    <span class="material-icons float-start me-2">
+                        {% if message.tags == 'success' %}check_circle{% elif message.tags == 'info' %}info{% elif message.tags == 'warning' %}warning{% else %}error{% endif %}
+                    </span>
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
         {% block content %}{% endblock %}
     </main>
 
