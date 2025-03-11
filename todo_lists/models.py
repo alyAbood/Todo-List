@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Project(models.Model):
@@ -8,11 +9,13 @@ class Project(models.Model):
     Attributes:
         title: The title of the project
         description: Detailed description of the project
+        user: The user who owns this project
         created_at: Timestamp when the project was created
         updated_at: Timestamp when the project was last updated
     """
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='projects')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
