@@ -1,0 +1,56 @@
+# This file describes an application. You can have multiple applications
+# in the same project.
+#
+# See https://docs.platform.sh/configuration/app.html
+
+# The name of this app. Must be unique within a project.
+name: app
+
+# The runtime the application uses.
+type: python:3.11
+
+# The build-time dependencies of the app.
+dependencies:
+    python:
+        pipenv: "2023.10.3"
+
+# The hooks executed at various points in the lifecycle of the application.
+hooks:
+    # The build hook runs before the application is deployed, and is useful for
+    # assembling the codebase.
+    build: |
+        pip install -r requirements.txt
+        python manage.py collectstatic --noinput
+    # The deploy hook runs after your application has been deployed and started.
+    deploy: |
+        python manage.py migrate
+
+# The relationships of the application with services or other applications.
+relationships:
+    database: "db:postgresql"
+
+# The configuration of app when it is exposed to the web.
+web:
+    # Commands are run once after deployment to start the application.
+    commands:
+        start: gunicorn tl_project.wsgi:application --bind 0.0.0.0:8000
+
+    locations:
+        "/":
+            passthru: true
+        "/static":
+            root: "static"
+            expires: 1h
+            allow: true
+
+# The size of the persistent disk of the application (in MB).
+disk: 512
+
+# The mounts that will be performed when the package is deployed.
+mounts:
+    "static":
+        source: local
+        source_path: "static"
+
+# The timezone the application will be deployed in
+timezone: UTC 
