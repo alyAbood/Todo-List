@@ -65,7 +65,7 @@ def project_create(request):
                 description=description,
                 user=request.user
             )
-            return redirect('project_detail', pk=project.pk)
+            return redirect('todo_lists:project_detail', pk=project.pk)
     
     return render(request, 'todo_lists/project_form.html')
 
@@ -88,7 +88,7 @@ def project_update(request, pk):
             project.title = title
             project.description = description
             project.save()
-            return redirect('project_detail', pk=project.pk)
+            return redirect('todo_lists:project_detail', pk=project.pk)
     
     return render(request, 'todo_lists/project_form.html', {'project': project})
 
@@ -103,7 +103,7 @@ def project_delete(request, pk):
         
     if request.method == 'POST':
         project.delete()
-        return redirect('project_list')
+        return redirect('todo_lists:project_list')
     
     return render(request, 'todo_lists/project_confirm_delete.html', {'project': project})
 
@@ -165,7 +165,7 @@ def task_create(request):
                 due_date=due_date,
                 project=project
             )
-            return redirect('task_detail', pk=task.pk)
+            return redirect('todo_lists:task_detail', pk=task.pk)
     
     return render(request, 'todo_lists/task_form.html', {'projects': projects})
 
@@ -217,7 +217,7 @@ def task_update(request, pk):
             task.is_completed = is_completed
             task.save()
             
-            return redirect('task_detail', pk=task.pk)
+            return redirect('todo_lists:task_detail', pk=task.pk)
     
     # Format the due date for the form
     due_date_formatted = ''
@@ -243,7 +243,7 @@ def task_delete(request, pk):
     
     if request.method == 'POST':
         task.delete()
-        return redirect('task_list')
+        return redirect('todo_lists:task_list')
     
     return render(request, 'todo_lists/task_confirm_delete.html', {'task': task})
 
@@ -260,4 +260,4 @@ def task_toggle_completion(request, pk):
     task.is_completed = not task.is_completed
     task.save()
     
-    return redirect(request.META.get('HTTP_REFERER', reverse('task_list')))
+    return redirect(request.META.get('HTTP_REFERER', reverse('todo_lists:task_list')))
