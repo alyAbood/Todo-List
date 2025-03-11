@@ -12,8 +12,8 @@ DEBUG = False
 # Set secret key from environment
 SECRET_KEY = os.environ.get('PLATFORM_PROJECT_ENTROPY', SECRET_KEY)
 
-# Configure allowed hosts
-ALLOWED_HOSTS = ['.platform.sh', '.platformsh.site']
+# Configure allowed hosts - allow all hosts for now to troubleshoot
+ALLOWED_HOSTS = ['*']
 
 # If we're on Platform.sh, add the routes to allowed hosts
 if config.is_valid_platform():
