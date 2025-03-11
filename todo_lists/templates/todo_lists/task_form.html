@@ -71,11 +71,12 @@
                     <div class="d-flex justify-content-between">
                         <a href="{% if task %}{% url 'todo_lists:task_detail' task.id %}{% else %}{% url 'todo_lists:task_list' %}{% endif %}" 
                            class="btn btn-outline-secondary">
-                            <span class="material-icons">arrow_back</span> Cancel
+                            <span class="material-icons">arrow_back</span>
+                            <span>Cancel</span>
                         </a>
                         <button type="submit" class="btn btn-primary">
-                            <span class="material-icons">save</span> 
-                            {% if task %}Update Task{% else %}Create Task{% endif %}
+                            <span class="material-icons">save</span>
+                            <span>{% if task %}Update Task{% else %}Create Task{% endif %}</span>
                         </button>
                     </div>
                 </form>

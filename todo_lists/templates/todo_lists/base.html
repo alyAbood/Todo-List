@@ -13,6 +13,31 @@
             text-decoration: line-through;
             color: #6c757d;
         }
+        
+        /* Fix alignment of Material Icons with text in buttons */
+        .btn .material-icons {
+            vertical-align: middle;
+            margin-top: -3px;
+            margin-bottom: -3px;
+            font-size: 18px;
+        }
+        
+        /* Add spacing between icon and text */
+        .btn .material-icons + span,
+        .btn span + .material-icons,
+        .material-icons + :not(.material-icons) {
+            margin-left: 4px;
+        }
+        
+        /* Special case for floating warning icons */
+        .alert .material-icons.float-start {
+            margin-top: 3px;
+        }
+        
+        /* For card actions with multiple buttons */
+        .btn-group .btn .material-icons {
+            margin-right: 0;
+        }
     </style>
     {% block extra_css %}{% endblock %}
 </head>

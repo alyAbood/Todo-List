@@ -56,10 +56,12 @@
                     {% csrf_token %}
                     <div class="d-flex justify-content-between">
                         <a href="{% url 'todo_lists:task_detail' task.id %}" class="btn btn-outline-secondary">
-                            <span class="material-icons">arrow_back</span> Cancel
+                            <span class="material-icons">arrow_back</span>
+                            <span>Cancel</span>
                         </a>
                         <button type="submit" class="btn btn-danger">
-                            <span class="material-icons">delete_forever</span> Delete Task
+                            <span class="material-icons">delete_forever</span>
+                            <span>Delete Task</span>
                         </button>
                     </div>
                 </form>

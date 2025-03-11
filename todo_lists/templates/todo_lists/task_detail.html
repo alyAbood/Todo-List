@@ -25,13 +25,15 @@
                 <div>
                     <a href="{% url 'todo_lists:task_toggle_completion' task.id %}" class="btn btn-light btn-sm">
                         <span class="material-icons">{% if task.is_completed %}close{% else %}check{% endif %}</span>
-                        {% if task.is_completed %}Mark Incomplete{% else %}Mark Complete{% endif %}
+                        <span>{% if task.is_completed %}Mark Incomplete{% else %}Mark Complete{% endif %}</span>
                     </a>
                     <a href="{% url 'todo_lists:task_update' task.id %}" class="btn btn-light btn-sm">
-                        <span class="material-icons">edit</span> Edit
+                        <span class="material-icons">edit</span>
+                        <span>Edit</span>
                     </a>
                     <a href="{% url 'todo_lists:task_delete' task.id %}" class="btn btn-light btn-sm">
-                        <span class="material-icons">delete</span> Delete
+                        <span class="material-icons">delete</span>
+                        <span>Delete</span>
                     </a>
                 </div>
             </div>
@@ -108,11 +110,13 @@
             <div class="card-footer">
                 <div class="d-flex justify-content-between">
                     <a href="{% url 'todo_lists:task_list' %}" class="btn btn-outline-secondary">
-                        <span class="material-icons">arrow_back</span> Back to Tasks
+                        <span class="material-icons">arrow_back</span>
+                        <span>Back to Tasks</span>
                     </a>
                     {% if task.project %}
                         <a href="{% url 'todo_lists:project_detail' task.project.id %}" class="btn btn-outline-primary">
-                            <span class="material-icons">folder</span> View Project
+                            <span class="material-icons">folder</span>
+                            <span>View Project</span>
                         </a>
                     {% endif %}
                 </div>

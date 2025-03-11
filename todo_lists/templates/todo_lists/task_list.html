@@ -11,7 +11,8 @@
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h2 class="mb-0">All Tasks</h2>
                 <a href="{% url 'todo_lists:task_create' %}" class="btn btn-primary">
-                    <span class="material-icons">add</span> New Task
+                    <span class="material-icons">add</span>
+                    <span>New Task</span>
                 </a>
             </div>
             <div class="card-body">
@@ -69,13 +70,13 @@
                                                     </td>
                                                     <td>
                                                         <div class="btn-group" role="group">
-                                                            <a href="{% url 'todo_lists:task_toggle_completion' task.id %}" class="btn btn-sm btn-outline-success">
+                                                            <a href="{% url 'todo_lists:task_toggle_completion' task.id %}" class="btn btn-sm btn-outline-success" title="Mark as completed">
                                                                 <span class="material-icons">check</span>
                                                             </a>
-                                                            <a href="{% url 'todo_lists:task_update' task.id %}" class="btn btn-sm btn-outline-secondary">
+                                                            <a href="{% url 'todo_lists:task_update' task.id %}" class="btn btn-sm btn-outline-secondary" title="Edit task">
                                                                 <span class="material-icons">edit</span>
                                                             </a>
-                                                            <a href="{% url 'todo_lists:task_delete' task.id %}" class="btn btn-sm btn-outline-danger">
+                                                            <a href="{% url 'todo_lists:task_delete' task.id %}" class="btn btn-sm btn-outline-danger" title="Delete task">
                                                                 <span class="material-icons">delete</span>
                                                             </a>
                                                         </div>
@@ -123,13 +124,13 @@
                                                     </td>
                                                     <td>
                                                         <div class="btn-group" role="group">
-                                                            <a href="{% url 'todo_lists:task_toggle_completion' task.id %}" class="btn btn-sm btn-outline-secondary">
+                                                            <a href="{% url 'todo_lists:task_toggle_completion' task.id %}" class="btn btn-sm btn-outline-secondary" title="Mark as incomplete">
                                                                 <span class="material-icons">close</span>
                                                             </a>
-                                                            <a href="{% url 'todo_lists:task_update' task.id %}" class="btn btn-sm btn-outline-secondary">
+                                                            <a href="{% url 'todo_lists:task_update' task.id %}" class="btn btn-sm btn-outline-secondary" title="Edit task">
                                                                 <span class="material-icons">edit</span>
                                                             </a>
-                                                            <a href="{% url 'todo_lists:task_delete' task.id %}" class="btn btn-sm btn-outline-danger">
+                                                            <a href="{% url 'todo_lists:task_delete' task.id %}" class="btn btn-sm btn-outline-danger" title="Delete task">
                                                                 <span class="material-icons">delete</span>
                                                             </a>
                                                         </div>
@@ -184,13 +185,13 @@
                                                 </td>
                                                 <td>
                                                     <div class="btn-group" role="group">
-                                                        <a href="{% url 'todo_lists:task_toggle_completion' task.id %}" class="btn btn-sm btn-outline-{% if task.is_completed %}secondary{% else %}success{% endif %}">
+                                                        <a href="{% url 'todo_lists:task_toggle_completion' task.id %}" class="btn btn-sm btn-outline-{% if task.is_completed %}secondary{% else %}success{% endif %}" title="{% if task.is_completed %}Mark as incomplete{% else %}Mark as completed{% endif %}">
                                                             <span class="material-icons">{% if task.is_completed %}close{% else %}check{% endif %}</span>
                                                         </a>
-                                                        <a href="{% url 'todo_lists:task_update' task.id %}" class="btn btn-sm btn-outline-secondary">
+                                                        <a href="{% url 'todo_lists:task_update' task.id %}" class="btn btn-sm btn-outline-secondary" title="Edit task">
                                                             <span class="material-icons">edit</span>
                                                         </a>
-                                                        <a href="{% url 'todo_lists:task_delete' task.id %}" class="btn btn-sm btn-outline-danger">
+                                                        <a href="{% url 'todo_lists:task_delete' task.id %}" class="btn btn-sm btn-outline-danger" title="Delete task">
                                                             <span class="material-icons">delete</span>
                                                         </a>
                                                     </div>
@@ -208,7 +209,8 @@
                         <h4>No Tasks Found</h4>
                         <p class="text-muted">Create your first task to get started!</p>
                         <a href="{% url 'todo_lists:task_create' %}" class="btn btn-primary">
-                            <span class="material-icons">add</span> Create Task
+                            <span class="material-icons">add</span>
+                            <span>Create Task</span>
                         </a>
                     </div>
                 {% endif %}

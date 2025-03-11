@@ -39,7 +39,8 @@
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h3>Projects</h3>
                 <a href="{% url 'todo_lists:project_create' %}" class="btn btn-primary btn-sm">
-                    <span class="material-icons">add</span> New Project
+                    <span class="material-icons">add</span>
+                    <span>New Project</span>
                 </a>
             </div>
             <ul class="list-group list-group-flush">
@@ -62,7 +63,8 @@
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h3>Pending Tasks</h3>
                 <a href="{% url 'todo_lists:task_create' %}" class="btn btn-primary btn-sm">
-                    <span class="material-icons">add</span> New Task
+                    <span class="material-icons">add</span>
+                    <span>New Task</span>
                 </a>
             </div>
             <ul class="list-group list-group-flush">
@@ -81,7 +83,7 @@
                             {% endif %}
                         </div>
                         <div>
-                            <a href="{% url 'todo_lists:task_toggle_completion' task.id %}" class="btn btn-outline-success btn-sm">
+                            <a href="{% url 'todo_lists:task_toggle_completion' task.id %}" class="btn btn-outline-success btn-sm" title="Mark as completed">
                                 <span class="material-icons">check</span>
                             </a>
                         </div>
