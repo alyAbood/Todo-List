@@ -14,19 +14,31 @@
             color: #6c757d;
         }
         
-        /* Fix alignment of Material Icons with text in buttons */
+        /* Improved alignment of Material Icons with text in buttons */
         .btn .material-icons {
             vertical-align: middle;
-            margin-top: -3px;
-            margin-bottom: -3px;
-            font-size: 18px;
+            margin-top: -4px;
+            margin-bottom: -2px;
+            font-size: 20px;
+            line-height: 1;
+            display: inline-flex;
+            align-items: center;
         }
         
-        /* Add spacing between icon and text */
-        .btn .material-icons + span,
-        .btn span + .material-icons,
-        .material-icons + :not(.material-icons) {
-            margin-left: 4px;
+        /* Fix vertical centering issues with button content */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Add proper spacing between icon and text */
+        .btn .material-icons + span {
+            margin-left: 6px;
+        }
+        
+        .btn span + .material-icons {
+            margin-left: 6px;
         }
         
         /* Special case for floating warning icons */
@@ -35,8 +47,26 @@
         }
         
         /* For card actions with multiple buttons */
-        .btn-group .btn .material-icons {
-            margin-right: 0;
+        .card-header .btn + .btn {
+            margin-left: 5px;
+        }
+        
+        /* Ensure proper alignment in nav items */
+        .nav-link .material-icons {
+            vertical-align: middle;
+            margin-top: -3px;
+            margin-right: 3px;
+            font-size: 20px;
+        }
+        
+        /* Fix dropdowns with icons */
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .dropdown-item .material-icons {
+            margin-right: 8px;
         }
     </style>
     {% block extra_css %}{% endblock %}

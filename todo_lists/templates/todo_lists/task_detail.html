@@ -22,12 +22,12 @@
         <div class="card">
             <div class="card-header {% if task.is_completed %}bg-success{% else %}bg-primary{% endif %} text-white d-flex justify-content-between align-items-center">
                 <h2 class="mb-0 {% if task.is_completed %}task-completed{% endif %}">{{ task.title }}</h2>
-                <div>
-                    <a href="{% url 'todo_lists:task_toggle_completion' task.id %}" class="btn btn-light btn-sm">
+                <div class="btn-toolbar">
+                    <a href="{% url 'todo_lists:task_toggle_completion' task.id %}" class="btn btn-light btn-sm me-2">
                         <span class="material-icons">{% if task.is_completed %}close{% else %}check{% endif %}</span>
                         <span>{% if task.is_completed %}Mark Incomplete{% else %}Mark Complete{% endif %}</span>
                     </a>
-                    <a href="{% url 'todo_lists:task_update' task.id %}" class="btn btn-light btn-sm">
+                    <a href="{% url 'todo_lists:task_update' task.id %}" class="btn btn-light btn-sm me-2">
                         <span class="material-icons">edit</span>
                         <span>Edit</span>
                     </a>
