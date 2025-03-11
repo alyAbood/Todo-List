@@ -19,11 +19,13 @@ ALLOWED_HOSTS = ['.platform.sh', '.platformsh.site']
 if config.is_valid_platform():
     # Add all Platform.sh routes to allowed hosts
     routes = config.routes
-    for url, route in routes.items():
-        host = route.get('host', '')
+    for route_url, route_info in routes.items():
+        host = route_info.get('host', '')
         if host:
             ALLOWED_HOSTS.append(host)
             # Also add the www subdomain if it exists
+            if host.startswith('www.'):
+                continue
             ALLOWED_HOSTS.append(f"www.{host}")
 
 # Database configuration
