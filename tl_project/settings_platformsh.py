@@ -18,7 +18,8 @@ ALLOWED_HOSTS = ['.platform.sh', '.platformsh.site']
 # If we're on Platform.sh, add the routes to allowed hosts
 if config.is_valid_platform():
     # Add all Platform.sh routes to allowed hosts
-    for route in config.routes():
+    routes = config.routes
+    for url, route in routes.items():
         host = route.get('host', '')
         if host:
             ALLOWED_HOSTS.append(host)
