@@ -1,0 +1,58 @@
+{% extends "todo_lists/base.html" %}
+
+{% block title %}Delete Project - Task Manager{% endblock %}
+
+{% block nav_projects_active %}active{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'todo_lists:index' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'todo_lists:project_list' %}">Projects</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'todo_lists:project_detail' project.id %}">{{ project.title }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Delete</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h2 class="mb-0">Delete Project</h2>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning">
+                    <span class="material-icons float-start me-2">warning</span>
+                    <p>Are you sure you want to delete the project <strong>"{{ project.title }}"</strong>?</p>
+                    <p class="mb-0"><strong>Warning:</strong> This will also delete all tasks associated with this project. This action cannot be undone.</p>
+                </div>
+                
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Project Information</h5>
+                        <p><strong>Title:</strong> {{ project.title }}</p>
+                        <p><strong>Tasks:</strong> {{ project.tasks.count }}</p>
+                        <p><strong>Created:</strong> {{ project.created_at|date:"F d, Y" }}</p>
+                    </div>
+                </div>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'todo_lists:project_detail' project.id %}" class="btn btn-outline-secondary">
+                            <span class="material-icons">arrow_back</span> Cancel
+                        </a>
+                        <button type="submit" class="btn btn-danger">
+                            <span class="material-icons">delete_forever</span> Delete Project
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

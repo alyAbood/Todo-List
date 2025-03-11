@@ -41,19 +41,51 @@ def project_detail(request, pk):
 
 def project_create(request):
     """View to create a new project."""
-    # Placeholder - will implement form handling
+    if request.method == 'POST':
+        # Process the form data
+        title = request.POST.get('title')
+        description = request.POST.get('description', '')
+        
+        if title:
+            # Create a new project
+            project = Project.objects.create(
+                title=title,
+                description=description
+            )
+            return redirect('todo_lists:project_detail', pk=project.id)
+    
+    # Display the empty form
     return render(request, 'todo_lists/project_form.html')
 
 def project_update(request, pk):
     """View to update an existing project."""
     project = get_object_or_404(Project, pk=pk)
-    # Placeholder - will implement form handling
+    
+    if request.method == 'POST':
+        # Process the form data
+        title = request.POST.get('title')
+        description = request.POST.get('description', '')
+        
+        if title:
+            # Update the project
+            project.title = title
+            project.description = description
+            project.save()
+            return redirect('todo_lists:project_detail', pk=project.id)
+    
+    # Display the form with the current data
     return render(request, 'todo_lists/project_form.html', {'project': project})
 
 def project_delete(request, pk):
     """View to delete a project."""
     project = get_object_or_404(Project, pk=pk)
-    # Placeholder - will implement deletion confirmation
+    
+    if request.method == 'POST':
+        # Delete the project
+        project.delete()
+        return redirect('todo_lists:project_list')
+    
+    # Display the confirmation page
     return render(request, 'todo_lists/project_confirm_delete.html', {'project': project})
 
 # Task views
