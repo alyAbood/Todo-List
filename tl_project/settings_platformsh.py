@@ -15,28 +15,34 @@ SECRET_KEY = os.environ.get('PLATFORM_PROJECT_ENTROPY', SECRET_KEY)
 # Configure allowed hosts
 ALLOWED_HOSTS = ['.platform.sh', '.platformsh.site']
 
-# If we're on Platform.sh, get the configured domain
+# If we're on Platform.sh, add the routes to allowed hosts
 if config.is_valid_platform():
-    ALLOWED_HOSTS.extend([
-        config.get_primary_route().get('host', ''),
-        f"www.{config.get_primary_route().get('host', '')}"
-    ])
+    # Add all Platform.sh routes to allowed hosts
+    for route in config.routes():
+        host = route.get('host', '')
+        if host:
+            ALLOWED_HOSTS.append(host)
+            # Also add the www subdomain if it exists
+            ALLOWED_HOSTS.append(f"www.{host}")
 
 # Database configuration
 if config.is_valid_platform():
-    database_config = config.credentials('database')
-    
-    # Configure the database
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': database_config['path'],
-            'USER': database_config['username'],
-            'PASSWORD': database_config['password'],
-            'HOST': database_config['host'],
-            'PORT': database_config['port'],
+    try:
+        database_config = config.credentials('database')
+        
+        # Configure the database
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql',
+                'NAME': database_config['path'],
+                'USER': database_config['username'],
+                'PASSWORD': database_config['password'],
+                'HOST': database_config['host'],
+                'PORT': database_config['port'],
+            }
         }
-    }
+    except Exception as e:
+        print(f"Database configuration error: {e}")
 
 # Static files configuration
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
