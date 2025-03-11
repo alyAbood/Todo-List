@@ -23,7 +23,7 @@ if config.is_valid_platform():
     ])
 
 # Database configuration
-if config.is_valid_platform() and not config.in_build():
+if config.is_valid_platform():
     database_config = config.credentials('database')
     
     # Configure the database

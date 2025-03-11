@@ -18,6 +18,7 @@ hooks:
         python manage.py collectstatic --noinput
     # The deploy hook runs after your application has been deployed and started.
     deploy: |
+        export DJANGO_SETTINGS_MODULE=tl_project.settings_platformsh
         python manage.py migrate
 
 # The relationships of the application with services or other applications.
