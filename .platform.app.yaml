@@ -9,11 +9,6 @@ name: app
 # The runtime the application uses.
 type: python:3.11
 
-# The build-time dependencies of the app.
-dependencies:
-    python:
-        pipenv: "2023.10.3"
-
 # The hooks executed at various points in the lifecycle of the application.
 hooks:
     # The build hook runs before the application is deployed, and is useful for
